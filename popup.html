@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>BeforeUClick</title>
+    <link rel="stylesheet" href="ui/popup.css">
+</head>
+<body>
+    <header class="header-band">
+        <img class="logo" src="icons/icon128.png" alt="BeforeUClick">
+        <div class="title">
+            <h1>BeforeUClick</h1>
+            <p class="eyebrow">Email security helper</p>
+        </div>
+        <button id="openOptionsButton" type="button" class="icon-button" aria-label="Open settings" title="Settings">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="3"></circle>
+                <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.6 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+            </svg>
+        </button>
+    </header>
+
+    <div class="scanline" aria-hidden="true"></div>
+
+    <main class="container">
+        <div class="stats-bar" aria-label="Today's BeforeUClick activity">
+            <div class="stat">
+                <span class="stat-num" id="statScanned">0</span>
+                <span class="stat-label">checked today</span>
+            </div>
+            <div class="stat-sep" aria-hidden="true"></div>
+            <div class="stat">
+                <span class="stat-num" id="statConcern">0</span>
+                <span class="stat-label">need review</span>
+            </div>
+        </div>
+
+        <section id="startScreen">
+            <div class="hero-icon" aria-hidden="true">
+                <img src="icons/mark.png" alt="">
+            </div>
+            <h2>Ready to check</h2>
+            <p class="description">Open an email, then check it before following a link or acting on a request.</p>
+
+            <button id="checkButton" type="button" class="primary-button">
+                <span class="btn-label">Check this email</span>
+                <svg class="btn-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M5 12h14M13 6l6 6-6 6"></path>
+                </svg>
+                <span class="btn-loading hidden">
+                    <svg class="spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                        <circle cx="12" cy="12" r="9" stroke-opacity=".25"></circle>
+                        <path d="M21 12a9 9 0 0 0-9-9"></path>
+                    </svg>
+                    Checking…
+                </span>
+            </button>
+
+            <p id="errorMessage" class="error-message hidden"><span>Open an email in Gmail, Outlook, or Yahoo Mail, then try again.</span></p>
+
+            <p class="privacy">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <rect x="5" y="10" width="14" height="10" rx="2"></rect>
+                    <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
+                </svg>
+                Analysis stays local in this prototype
+            </p>
+        </section>
+
+        <section id="resultScreen" class="hidden">
+            <article class="status-strip" id="riskCard" data-state="neutral">
+                <div class="status-strip-head">
+                    <div id="resultIcon" class="status-icon" aria-hidden="true">?</div>
+                    <div class="status-strip-heading">
+                        <p class="eyebrow">Check result</p>
+                        <h2 id="riskLevel">Check complete</h2>
+                    </div>
+                </div>
+                <p id="riskMessage" class="decision-message"></p>
+                <p id="resultContext" class="result-context"></p>
+            </article>
+
+            <div id="attentionCard" class="ios-group attention-card hidden">
+                <button id="toggleReasonsButton" type="button" class="group-action" aria-expanded="false">
+                    <span id="attentionLabel">Things to review</span>
+                    <span class="chevron" aria-hidden="true">⌄</span>
+                </button>
+                <ul id="reasonsList" class="reasons-list hidden"></ul>
+            </div>
+
+            <p id="linkHint" class="context-hint hidden">Link details appear beside checked links in the email. Hover or keyboard-focus a highlighted link to inspect it.</p>
+
+            <button id="viewFullReportButton" type="button" class="primary-button">Inspect full report</button>
+            <div class="result-actions">
+                <button id="checkAgainButton" type="button" class="secondary compact-button">Check again</button>
+                <button id="stopCheckingButton" type="button" class="secondary compact-button stop-button">Stop checking</button>
+            </div>
+        </section>
+    </main>
+
+    <script src="settings/preferences.js"></script>
+    <script src="popup.js"></script>
+</body>
+</html>
